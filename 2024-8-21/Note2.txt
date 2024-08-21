@@ -1,0 +1,49 @@
+1.从分支控制开始
+Homework6 if else练习
+Homework7 多分支练习题
+Homework8 一道题 用到了boolean的抽象用法
+同时注意 if在某个前置条件执行true后 后续分支不再检查执行 想要执行需要在前置条件里嵌套 而不是往下写
+
+新方法 charAt() 用来调用字符串中的某个制定字符
+
+#Homework9 后续待完成作业 出票系统根据淡旺季的月份和年龄打印票价
+4_10 旺季 成人18-60 60元 儿童小于18 半价 老人大于60 1/3
+淡季 成人40 其他20
+
+2.switch分支结构
+Homework10 字母转星期几
+没有break会直接执行后续直到break或是完成执行 这也是为什么default会写到最后
+#Homework11 转换大小写
+#Homework12 为成绩判断是否合格 很有意思 可写 判断条件写在switch后
+#Homework13 输入月份 输出季节 要求最少代码量
+
+3.for和while
+美滋滋 for的语法没忘
+while原来就不喜欢用^^||
+while()里面只放条件没有;;
+
+do..while 区别是循环体放在前面 先执行 稳定执行一次
+
+#多重循环执行流程 放到后面复习算法再弄
+#Homework14 打印三个班成绩的平均分
+Homework15 打印九九乘法表 println和print的区别使用
+#Homework16 空心金字塔
+
+4.break的细节
+#Homework17 随机数 随到后就停并查看输出了多少次
+#Homework18 登录次数
+
+5.continue
+用法 if(..){ .. continue;}
+使用continue后后续不会执行 而是从头继续循环
+Homework19 理解continue label代表标签 标志出了循环的位置
+使用continue label可以定义继续开始的位置 用于多个循环嵌套中
+
+6.return
+用在main中表示退出，用在方法中表示跳出；
+
+7.java基础作业练习题
+Part1结束了 复习用时两天的两个下午 大概4小时
+#Homework19
+练习题来自P148 但是没空写 在复习算法的时候可以考虑从这里开始
+
