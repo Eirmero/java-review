@@ -1,0 +1,149 @@
+包装类 集合 泛型 线程 IO流 net sql
+1.异常处理
+出现异常后程序会直接停止；为了能够继续运行，开始使用异常处理
+Homework57 异常处理体验;
+异常分类：两种 Error(错误) 和 Exception(其它因编程或者偶然外在因素导致的错误)
+Throwable
+Error(Unchecked)    ；   Exception
+IOException (Checked Exception): EOFException, FileNotFoundEXception, MalformedURLEXception, UnknownHostException
+ClassNotFoundException(Checked Exception)
+CloneNotSupportedException(Checked Exception)
+RuntimeException(Unchecked Excexcepption): ArithmeticException, ClasCastEtion(类型转换错误), IllegalArgumentException, IllegalStateException, IndexOutOfBoundsException, NoSuchElementException, NullPointerException;
+#Homework58 异常处理练习题 遇到的异常还不多 等后面遇到的多了回来补充
+
+异常处理方式:两种 try-catch-finally 和 throws
+throws和之前的tcf的区别：throws是直接抛出已有的异常让人来解决
+很好理解的例子：如果没异常处理，那么会自动调用throws来处理
+
+自定义异常：异常类是接口，通过extends父类异常可以利用构造器自定义处理方式；
+throws和throw的区别：
+throw在方法体中，手动生成异常对象的关键字 throw new AgeException("...");
+throws:用在方法声明处 后跟异常类型
+Homework59 两道题来熟练异常处理
+两数相除进行计算，对数据格式不正确、缺少命令行参数、除0的情况进行异常处理
+#Homework60 读代码 看会不会发生异常 发生异常的类型
+
+2.常用类 Wrapper类 包装类
+针对八种基本数据类型相应的引用类型--包装类
+有了该类的特点，就可以调用类中的方法
+boolean -> Boolean
+char    -> Character
+byte    -> Byte
+short   -> Short
+int     -> Integer
+long    -> Long
+float   -> Float
+double  -> Double
+
+重点将int和Integer 其余的类似
+jdk5以前需要手动装箱拆箱：
+int n1 = 0;
+Integer integer = new Integer(n1);
+Integer integer1 = new Integer.valueOf(n1);
+Int i = integer.intValue;
+jdk5以后可以自动装箱拆箱:
+Integer integer2 = n2; //底层使用了new 但是简化了
+int n3 = integer2;
+Homework61 读代码判断题 很怪 遇到了再问问gpt
+
+包装类方法：包装类和String之间的相互转换
+String str1 = i + "";
+String str2 = i.toString();
+String str3 = String.valueOf(i);
+
+String str4 = "123";
+Integer i2 = Integer.parseInt(str4);
+Integer i3 = new Integer(Str4);
+
+以Integer和Character说明常用方法
+太多了 直接使用类方法查询；
+Homework62 包装类创建机制 记住valueOf()方法在-127~128时返回同样的对象
+#Homework63 Integer面试题
+
+3.String类
+使用Unicode编码来保存一个string字符串的包装类：String
+String有很多构造器；包括：
+String s1 = new String();
+String s2 = new String(String original);
+String s3 = new String(char[] a);
+String s4 = new String(char[] a, int startIndex, int count);
+...
+String是final类，不能被其他类继承；String的属性是private final char value[];
+地址不能修改，但里面的数值可以修改；任何对 String 对象的修改操作（如拼接、替换等）
+都会生成一个新的字符串对象，而不会改变原有的字符串
+这种不可变性保证了字符串的安全性和线程安全性
+
+String创建内存流程图：
+Homework64 equals 和 == 都返回true 理解创建的过程
+#Homework65 P467/468/469/470 加深理解 看堆和池的创建内容和指向
+
+String方法介绍
+因为String的创建每次都要在内存重新开辟空间，效率较低
+所以又设计了StringBuilder和StringBuffer来增强String的功能
+StringBuffer同时也是一个容器，和Sting比，长度是可变的
+
+StringBuffer:
+StringBuffer sb = new StringBuffer(); //创建了一个大小为16的char[],用于存放字符内容
+String str = "hello str";
+StringBuffer sb1 = new StringBuffer(str);
+sb = sb1.append(str);
+
+把StringBuffer转回String
+sb.toString();
+String str2 = new String(sb); //使用构造器
+
+StringBuffer的常用方法:
+增append 删delete(start, end)  改replace(start, end, string) //将从start开始end结束的内容修改掉，包含start不含end
+查indexOf 查找子串在字符串第一次出现的索引，如果找不到返回-1
+插insert 获取长度 length
+一切解释权归gpt4所有
+Homework66 看代码熟悉StringBuffer
+
+StringBuilder 此类提供了一个与StringBuffer兼容的API，但不保证同步(StringBuilder不是线程安全)
+被设计来作为StringBuffer的一个简易替换，用在字符串缓冲区被单个线程使用的时候；速度会比StringBuffer快
+#Homework67 看代码属性StringBuilder
+
+4.Math类
+一切解释权归gpt所有^^||
+
+5.Arrays类
+排序的内容很多
+主要学习内容是在指定类重写各种排序方法()
+#Homework68 基本上也是按照需求写排序；
+
+6.System类
+System.exit(); //退出当前程序
+System.arraycopy() 一般都直接调用Arrays.copyOf();底层调用sys的方法来完成操作
+System.currentTimeMillens();返回当前时间距离1970-1-1的毫秒数
+System.gc()；运行垃圾回收机制
+
+7.BigInteger和BigDecimal
+一个适合保存较大整数，一个适合保存高精度浮点数
+因为是对象，没法直接和其他的数据类型加减 需要先创建同样类型的数值对象再操作
+
+8.日期类
+Date Calender 三代日期
+回来补 妈的太催眠了
+
+Homework69 根据需求反转字符串顺序 编写方法reverse
+#Homework70 P494 根据需求编写数据库 如果不满足条件则抛出异常对象
+#Homework71 P495 字符串统计
+#Homework72 P496 String内存布局分析
+
+常用类结束 后面估计用的还多 但听得太折磨了
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
