@@ -1,0 +1,85 @@
+今天开始集合的复习
+集合 泛型 线程 IO流 大三的网络编程和Sql复习 jdbc 完了就复习完了
+大学不努力 研究生来补作业了 沟槽的
+
+集合
+数组不好用 所以直接淘汰了
+集合可以动态保存多个任意对象 使用很方便
+还添加了一系列的操作对象的方法来增删改查  add remove get set
+
+集合框架体系
+有两个类别
+单列集合Collection
+包括List和Set
+List包括ArrayList LinkedList Vector
+Set包括HashSet TreeSet (LinkedHashSet)
+双列集合Map
+包括HashMap TreeMap HashTable Properties (LinkedHashMap)
+
+1.Collection是集合层次的根接口，定义了集合的基本操作 如增删改查
+Collection的三个主要子接口是List Set 和Queue
+list.add() list.remove() list.contains() list.size() list.isEmpty() list.clear()
+list.addAll() list.containsAll() list.removeAll()
+
+2.Collection接口遍历元素的方式:
+使用迭代器Iterator来进行遍历
+Iterator iterator = list.iterator();
+创建迭代器后，迭代器位于第一个元素之前，iterator.hasNext()返回true;
+iterator.next()指向第一个元素;
+用while可以写出一个比较简单的输出
+while(list.hasNext()){}
+
+3.增强for循环替代iterator；
+其实就是简化版的iterator
+for(Object book : list){
+    System.out.println("book=" + book)
+}
+
+Homework72 List集合熟练程序 根据需求编写并遍历、重写
+
+4.List接口方法
+List集合中的元素有序排序，且可以重复；list支持索引，即每个元素有对应的顺序索引；
+容器中的元素都对应一个整数型的序号，记载其在容器中的位置；list.get(3)；
+add addAll get(int index) indexOf lastIndexOf remove(int index) set(int index, Object ele)
+List sublist1 = list.subList(int startIndex, int endIndex)
+Homework73 按照要求完成List元素操作
+
+List的三种遍历方式：iterator 增强for 普通for都可以
+
+Homework73 list的排列 按要求进行排序
+@SuppressWarnings({"all"})
+重写排序方法 要求根据排列的目标属性数据来进行新排序
+
+
+5.ArrayList注意事项
+线程不安全 问gpt怎么避免
+扩容机制 初始为10 当容量满了的时候会创建新的ArrayList 其大小为原数组的1.5倍 然后把原来那个里面的数据导入新数组
+为了降低性能开销 最好提前确定数组的大小
+ArrayList的最大容量是Integer.MAX_VALUE - 8 (约2^31 - 8)
+超过这个容量会导致内存溢出错误(OutOfMemoryError)
+
+#Homework74 看底层代码分析ArrayList的底层机制
+挺有意思 有空复习
+
+6.Vector
+线程安全 所有方法都是synchronized 多个线程可以同时访问vector对象
+迭代器是不安全的 如果在迭代时对的结构进行更改会报错 ConcurrentModificationException
+虽然与arraylist类似，但vector一般被认为是过时的集合；
+自从引入了Arraylist和其他同步集合类如(CopyOnWriteArrayList)后就开始减少使用了
+
+Vector扩容时默认翻倍 如果自定义了 则会按照制定的增量扩容
+
+7.LinkedList
+同时实现了ArrayList(有序集合，可以包含重复元素)和Queue和Deque接口(双端队列，支持从两端进行元素的插入和删除)
+list.addFirst list.addLast 将元素插入到表头/表尾
+list.removeFirst list.removeLast 获取表头/表尾元素并从列表中移出
+list.peekFirst() list.peekLast() 获取但不移出列表的第一个/最后一个元素 若为空则返回NULL
+
+当频繁插入和删除时使用LinkedList
+因为Linked实现了Deque,所以特别适合作为队列(FIFO - 先进先出)或是双端队列
+改查的效率比ArrayList低
+
+8.Set接口
+Set接口实现的类是无序的(添加和取出的顺序不一样)，没有索引(所以不能get(i))
+不允许重复元素 所以最多一个NULL
+
