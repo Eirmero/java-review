@@ -1,0 +1,77 @@
+1.HashSet
+没法放一样的对象 但当new String("Dog")的时候 new的新的
+虽然内容一眼但是这个对象用equals返回的hashcode地址不一样 因为指向不一样
+所以会判断是两个不一样的
+
+HashSet的底层是HashMap
+Homework75 HashSet实践题 手写hashcode的返回和判断逻辑
+#Homework76 更多思考题 差的不多
+
+2.LinkedHashSet
+LinkedHashSet是HashSet的子类 作为LinkedSet 底层维护了一个数组加双向列表
+根据元素的hashCode来决定元素储存的位置 同时用链表来维护元素的次序 这使得看起来是以插入顺序存储的
+同样 LinkedHashSet不允许添加重复元素
+Homework77 和HashSet类似 如果认为是相同元素则拒绝添加
+
+3.Map
+Map不是Collection的子类，而是一种映射关系；
+Map储存键值对，成为映射，每个Key唯一，映射到相应的值Value；
+Key和Value可以是任意值，但有的不能是NULL，如Hashtable就不允许
+在Map中Key是唯一的，不能有重复的键，可以有重复的值，和函数类似；如果插入一个新的键值对会覆盖之前的那个；
+
+Map常用的方法:
+map.put(K key, V value)
+get(Object key)
+remove(Object key)
+containsKey(Object key)
+containsValue(Object value)
+
+Map的遍历方式
+key = map.keySet()返回Map中所有键的Set视图，
+再通过map.get(key)来获得所有值;
+map.values()返回map中所有值的Collection视图，遍历这个Collection即可;
+iterator.hasNext()通用套装;
+map.forEach(key, value)方法
+map.entrySet.stream(); 普通for循环
+map.entrySet() entry.getKey() entry.getValue();
+...
+
+#Homework78 map练习题 加深理解
+
+HashMap的扩容机制和HashSet一样
+#Homework79 HashMap读代码
+
+回头再想想扩容机制
+
+4.Properties
+Properties是Map的子类 实现了map的接口 也是一种使用键值对来保存数据的集合
+使用特点和hashtable类似 经常在工程项目中作为存储配置的文件
+
+5.开发中的集合选择实现类
+先判断存储的类型(一组对象[单列]或一组键值对[双列])
+一组对象：Collection接口的某个实现子类
+允许重复：List
+增删多：LinkedList[底层维护了一个双向链表]
+改查多：ArrayList[底层维护了Object类型的可变数组]
+不允许重复：Set
+无序：HashSet[底层是HashMap，维护了一个哈希表(数组+链表+红黑树)]
+排序：TreeSet
+插入和取出顺序一致：LinkedHashSet，维护了数组和双向列表
+
+一组键值对：Map
+键无序：HashMap 底层是数组+链表+红黑树(jdk8)
+键排序：TreeMap
+键插入和取出顺序一致：LinkedHashMap
+读取文件IO流：Properties
+
+6.Collections工具类
+一些static的方法封装 以后用多了就习惯了
+
+#Homework80 集合类大作业
+
+
+
+
+
+
+
