@@ -23,5 +23,139 @@ JUnit单元测试框架
 
 2.线程
 通过实现Thread类或Runnable接口来创建
+什么是进程？什么又是线程？什么是多进程/线程并发？
+对于栈结构 先进后出 除了main方法的主线程 一般还有一个垃圾回收线程；因此启动JVM至少启动了两个线程
+
+线程调度模型：分时调度模型，抢占式调度模型
+分时：所有线程轮流使用CPU，平均分配每个线程占用的CPU时间
+抢占：优先级高的线程以较大概率优先获得CPU的执行权，如果线程的优先级相同，那么就会随机选择一个线程获得CPU的执行权
+Java采用抢占调度模型
+
+Java实现线程的两种方式：extends Thread ； implement Runnable
+创建一个类继承Thread，重写run方法，new一个线程对象，使用start方法
+如果使用run方法是线程的回调，不是启动线程，那么run就会先执行完再继续main线程 就变成了单线程
+MyThread t = new MyThread();
+
+
+创建一个类实现Runnable接口，重写run方法，new一个线程对象，使用start方法
+#这个类不是一个线程类 只是一个实现了runnable接口的普通类
+因此new的时候是
+Thread t = new Thread(new MyRunnable());
+
+调用线程时可以使用匿名内部类的方式直接启动新线程
+new MyThread(new Myrunnable){
+    @override
+    private static run(){}
+}.start()
+
+线程常用的方法
+setName(String name) 给线程命名
+getName()  获得线程名
+currentThread(Thread)  静态方法 获取这个代码所在位置的当前线程的引用(地址、对象)
+
+线程对象生命周期的7个状态
+new runnable(ready/running) blocked waiting timed_waiting terminated
+
+面试题 有关静态方法 sleep
+在哪里调用sleep 就是哪个地方的线程休眠 和线程名没关系 因为是静态方法
+t.sleep 本质上和Thread.sleep()一样
+
+如何中断Thread.sleep()
+t.interrupt(); //这是一个实例方法 不是静态的 要带着线程对象
+
+强行中断一个线程的执行 t.stop();
+现在不给停 因为没法保存 会直接导致数据丢失
+
+停止线程的合适手段：
+boolean run = ture;
+用if(run)嵌套代码来执行 当需要停止时，直接改成false
+
+守护线程：也被称为后台线程
+myThread.setDaemon(true);
+这个线程就变成守护线程了 哪怕是死循环 在main方法里调用myThread，在main结束后这个线程也会结束
+
+定时器/定时任务 java.util.Timer   java.util.TimerTask
+定时器加定时任务可以帮助我们完成，每间隔多久执行一次某段程序
+实际开发中用SpringTask框架 代码只是用来了解
+
+线程的合并：
+t.join() 实例化方法 这个代码会让对象线程与当前线程合并 使用后也会让当前线程变成等待状态，
+直到t线程结束运行后才会继续执行
+
+线程的优先级和让位：Java线程调度
+设置线程的优先级
+Thread.MIN_PRIORITY Thread.MAX_PRIORITY Thread.NORM_PRIORITY
+Thread.getPriority
+myThread.setPriority(Thread.MAX_PRIORITY)
+
+线程让位：静态方法 Thread.yield() 当前线程让位
+让位不会让当前线程进入阻塞状态 而是直接回到就绪
+
+什么情况需要考虑线程安全问题：
+1.多线程的并发问题
+2.有共享的数据
+3.共享数据涉及到修改的操作
+一般情况下：
+局部变量(基本数据类型)不存在安全问题 实例变量可能存在线程安全问题 因为堆是多线程共享的
+静态变量也可能存在线程安全问题
+
+如何解决线程安全问题：
+让线程排队执行： 线程同步机制（互斥锁）
+线程不排队： 异步机制
+
+线程同步：必须是需要排队的线程的共享对象 synchronized(obj){同步代码块}
+本质就是给对象上锁 线程释放后代码块解锁 后续线程递进
+同步代码块的范围越小 效率越高
+同步方法 synchronized(this){方法体}  简写的话也可以直接在方法前加synchronized
+面试题：判断对象锁对线程的影响
+
+死锁 最简单的例子就是两个类同时被锁 但两个线程方向相反 同时需要另一个对象来解锁 导致程序一直卡死
+
+#Homework82 多线程卖票系统：解决超卖的问题 模拟三个窗口同时卖票
+
+线程通信的三个方法： wait() notify() notifyAll() 这三个都是对象方法
+当obj.wait()调用时，在obj对象上活跃的所有对象都进入无期限等待，
+直到调用了该共享对象的notify()方法进行了唤醒；
+且唤醒后，会接着上一次调用wait()方法的位置继续向下执行
+对于线程的优先级，当使用obj.notify()后会优先唤醒优先级最高的，如果优先级相同，则随机唤醒
+obj.notifyAll会唤醒所有等待的线程；
+
+#Homework83 两个线程交替输出 核心思路是在t1占用互斥锁时就唤醒t2，然后让t1进入sleep；
+这时t2就会执行，然后重复唤醒的步骤，就能达到交替执行的效果
+
+#Homework84 三个线程交替输出 类似 但是更复杂
+对于synchronized(lock){} 的理解
+直接private static final Object lock = new Object() 直接创建一个共用的对象作为锁
+
+饿汉式单例模式(把类作为静态变量在加载时直接初始化) 懒汉式单例模式(私有构造函数 写一个get函数来节约资源)
+线程安全的懒汉式(把get函数用synchronized修饰保证安全上锁) 双重检查锁定(通过额外参数缩小synchronized的范围)
+
+可重入锁ReentrantLock 现在版本的jdk都建议用这个了
+使用Lock接口来实现这个ReentrantLock
+问gpt用法 举例说明
+实例对象后 在对象内部创建lock对象 对需要上锁的方法使用lock.lock()
+但是记得结束语句加上lock.unlock()来解锁   搭配食用try{} finally{}更嘉
+
+实现线程的第三种方法：使用Callable 实现call方法
+这种方式实现的线程是可以返回线程值的 问gpt
+
+实现线程的第四种方式：线程池
+ExecutorService executorService = Executors.newFixedThreadPool(3);
+讲任务交给线程池
+executorService.submit(new Runnable){
+    @overrivde 重写run
+}
+最后关闭线程池 executorService.shutdown();
+
+大作业 写推箱子和多线程下载器；
+
+
+
+
+
+
+
+
+
 
 
